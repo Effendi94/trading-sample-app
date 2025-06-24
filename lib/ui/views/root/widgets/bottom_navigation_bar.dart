@@ -14,11 +14,11 @@ final List<StaticModel> bottomNavigationList = [
   StaticModel(code: IconConstants.profileIcon, desc: 'profile'),
 ];
 
-class BottomNavigationBarWidget extends StackedView<RootViewmodel> {
+class BottomNavigationBarWidget extends ViewModelWidget<RootViewmodel> {
   const BottomNavigationBarWidget({super.key});
 
   @override
-  Widget builder(BuildContext context, RootViewmodel viewModel, Widget? child) {
+  Widget build(BuildContext context, RootViewmodel viewModel) {
     return BottomNavigationBar(
       currentIndex: viewModel.currentIndex,
       selectedItemColor: Colors.white,
@@ -37,7 +37,10 @@ class BottomNavigationBarWidget extends StackedView<RootViewmodel> {
                 // width: 50,
                 // height: 35,
                 decoration: BoxDecoration(
-                  color: viewModel.isIndexSelected(index) ? CustomColors.brandBluePrimary : Colors.transparent,
+                  color:
+                      viewModel.isIndexSelected(index)
+                          ? CustomColors.brandBluePrimary
+                          : Colors.transparent,
                   borderRadius: BorderRadius.circular(8),
                 ),
                 padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
@@ -57,7 +60,4 @@ class BottomNavigationBarWidget extends StackedView<RootViewmodel> {
           }).toList(),
     );
   }
-
-  @override
-  RootViewmodel viewModelBuilder(BuildContext context) => RootViewmodel();
 }

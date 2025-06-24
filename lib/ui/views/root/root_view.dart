@@ -22,12 +22,20 @@ class RootView extends StackedView<RootViewmodel> {
         decoration: BoxDecoration(
           color: CustomColors.brandSecondary,
           boxShadow: [
-            BoxShadow(color: CustomColors.brandSecondary, blurRadius: 10, spreadRadius: 0, offset: const Offset(0, -2)),
+            BoxShadow(
+              color: CustomColors.brandSecondary,
+              blurRadius: 10,
+              spreadRadius: 0,
+              offset: const Offset(0, -2),
+            ),
           ],
         ),
         child: Theme(
           data: ThemeData(splashColor: Colors.transparent, highlightColor: Colors.transparent),
-          child: Padding(padding: const EdgeInsets.fromLTRB(20, 5, 20, 10), child: BottomNavigationBarWidget()),
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(20, 5, 20, 10),
+            child: BottomNavigationBarWidget(),
+          ),
         ),
       ),
     );

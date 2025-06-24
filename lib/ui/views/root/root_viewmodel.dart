@@ -6,6 +6,7 @@ import 'package:trading_sample_app/ui/views/portfolio/portfolio_view.dart';
 
 class RootViewmodel extends IndexTrackingViewModel {
   Widget getTabBarView(int value) {
+    debugPrint('$value');
     switch (value) {
       case 0:
         return const MarketView();
