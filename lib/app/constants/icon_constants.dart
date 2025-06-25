@@ -1,6 +1,6 @@
 class IconConstants {
-  static const assetPath = 'assets/icons/';
-  static const symbolsPath = 'assets/icons/symbols/';
+  static const assetPath = 'assets/icons';
+  static const symbolsPath = 'assets/icons/symbols';
   static String get homeIcon => '$assetPath/home_ic.svg';
   static String get marketIcon => '$assetPath/market_ic.svg';
   static String get portfolioIcon => '$assetPath/portfolio_ic.svg';

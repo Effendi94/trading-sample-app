@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:trading_sample_app/app/app.locator.dart';
 import 'package:trading_sample_app/app/trading_simple_app.dart';
 
 Future<void> main() async {
@@ -7,8 +8,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // await SharedPrefs().init();
-  // setPathUrlStrategy();
-  // setupLocator();
+  setupLocator();
   // setupBottomSheetUI();
   // setupSnackbarUI();
   // setupDialogUI();

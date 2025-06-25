@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:trading_sample_app/app/constants/custom_colors.dart';
+import 'package:trading_sample_app/app/helper/string_extentions.dart';
 import 'package:trading_sample_app/app/helper/ui_helpers.dart';
+import 'package:trading_sample_app/ui/shared/circle_avatar_widget.dart';
+import 'package:trading_sample_app/ui/shared/shimmer_widget.dart';
 import 'package:trading_sample_app/ui/views/home/home_viewmodel.dart';
 
 class HomeView extends StackedView<HomeViewmodel> {
   const HomeView({super.key});
+
+  @override
+  void onViewModelReady(HomeViewmodel viewModel) {
+    viewModel.initData();
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   Widget builder(BuildContext context, HomeViewmodel viewModel, Widget? child) {
@@ -29,6 +38,38 @@ class HomeView extends StackedView<HomeViewmodel> {
                 ),
               ),
               Text('List Coins', style: Theme.of(context).textTheme.labelLarge),
+              ListView.separated(
+                shrinkWrap: true,
+                itemCount: viewModel.listAssets.length,
+                separatorBuilder: (context, index) => const SizedBox(height: 8),
+                itemBuilder: (context, idx) {
+                  final asset = viewModel.listAssets[idx];
+                  // debugPrint(asset.toString());
+                  return ListTile(
+                    tileColor: CustomColors.neutral20,
+                    contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12), // Rounded corners
+                    ),
+                    leading: CircleAvatarWidget(
+                      radius: 20,
+                      isSvg: true,
+                      assetPath: asset.logoAsset,
+                    ),
+                    title: Text(asset.name?.toUcWord ?? ''),
+                    subtitle: Text(asset.base?.toUpperCase() ?? ''),
+                    trailing:
+                        viewModel.isWebsocketLoading
+                            ? ShimmerWidget(width: screenWidth(context) * .08)
+                            : Text(
+                              '${asset.price}',
+                              style: Theme.of(
+                                context,
+                              ).textTheme.labelLarge?.copyWith(color: CustomColors.black),
+                            ),
+                  );
+                },
+              ),
             ],
           ),
         ),

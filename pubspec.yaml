@@ -36,7 +36,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   flutter_svg: ^2.2.0
-  observable_ish: ^6.0.5
+  intl: ^0.19.0
+  shimmer: ^3.0.0
   stacked: ^3.4.4
   stacked_hooks: ^0.2.4
   stacked_services: ^1.6.0
@@ -58,7 +59,7 @@ flutter:
     - assets/
     - assets/images/
     - assets/icons/
-    # - assets/icons/svg/
+    - assets/icons/symbols/
 
   fonts:
     - family: Poppins
