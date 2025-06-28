@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:stacked/stacked.dart';
+import 'package:trading_sample_app/app/constants/common.dart';
 import 'package:trading_sample_app/app/constants/endpoint.dart';
-import 'package:trading_sample_app/app/constants/icon_constants.dart';
 import 'package:trading_sample_app/app/models/asset_model.dart';
 import 'package:trading_sample_app/app/models/ticker_model.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
@@ -13,18 +13,9 @@ class BiWebSocketService with ListenableServiceMixin {
   // final ReactiveValue<WebSocketChannel?> _symbolChannel = ReactiveValue(null);
   // final ReactiveValue<WebSocketChannel?> _allSymbolChannel = ReactiveValue(null);
   final ReactiveValue<AssetModel?> _currentAsset = ReactiveValue(null);
-  final ReactiveValue<List<AssetModel>> _listAssets = ReactiveValue<List<AssetModel>>([
-    AssetModel(name: 'bitcoin', base: 'btc', symbol: 'btcusdt', logoAsset: IconConstants.btcIcon),
-    AssetModel(name: 'ethereum', base: 'eth', symbol: 'ethusdt', logoAsset: IconConstants.ethIcon),
-    AssetModel(
-      name: 'binance coin',
-      base: 'bnb',
-      symbol: 'bnbusdt',
-      logoAsset: IconConstants.bnbIcon,
-    ),
-    AssetModel(name: 'solana', base: 'sol', symbol: 'solusdt', logoAsset: IconConstants.solusIcon),
-    AssetModel(name: 'cardano', base: 'ada', symbol: 'adausdt', logoAsset: IconConstants.adaIcon),
-  ]);
+  final ReactiveValue<List<AssetModel>> _listAssets = ReactiveValue<List<AssetModel>>(
+    Common.listAssets,
+  );
 
   WebSocketChannel? symbolChannel;
   WebSocketChannel? allSymbolChannel;
