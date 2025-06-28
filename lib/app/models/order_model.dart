@@ -41,4 +41,14 @@ class OrderModel extends HiveObject {
   String toString() {
     return 'OrderModel(symbol: $symbol, price: $price, amount: $amount, type: $type, timestamp: $timestamp, total: $total)';
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'symbol': symbol,
+      'amount': amount,
+      'price': price,
+      'type': type.name,
+      'timestamp': timestamp.toIso8601String(),
+    };
+  }
 }
