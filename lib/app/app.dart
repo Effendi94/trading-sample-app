@@ -1,6 +1,9 @@
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:trading_sample_app/app/services/binance_websocket_service.dart';
+import 'package:trading_sample_app/app/services/hive_service.dart';
+import 'package:trading_sample_app/app/services/order_service.dart';
+import 'package:trading_sample_app/app/services/profile_service.dart';
 import 'package:trading_sample_app/ui/views/market/market_view.dart';
 import 'package:trading_sample_app/ui/views/order/order_view.dart';
 import 'package:trading_sample_app/ui/views/root/root_view.dart';
@@ -17,6 +20,9 @@ import 'package:trading_sample_app/ui/views/root/root_view.dart';
     LazySingleton(classType: BottomSheetService),
     LazySingleton(classType: SnackbarService),
     LazySingleton(classType: BiWebSocketService),
+    LazySingleton(classType: HiveService),
+    LazySingleton(classType: OrderService),
+    LazySingleton(classType: ProfileService),
   ],
 )
 class App {}

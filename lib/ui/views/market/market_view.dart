@@ -29,119 +29,159 @@ class MarketView extends StackedView<MarketViewmodel> {
       appBar: AppBar(title: Text('$assetName ($assetBase)')),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
-        child: Form(
-          key: viewModel.formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            spacing: 15,
-            children: [
-              Text(
-                'Market Price',
-                style: Theme.of(
-                  context,
-                ).textTheme.labelLarge?.copyWith(color: CustomColors.textPrimary, fontSize: 20),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatarWidget(radius: 20, isSvg: true, assetPath: asset.logoAsset),
-                  const SizedBox(width: 5),
-                  Text(
-                    '$assetSymbol',
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: CustomColors.textPrimary,
-                      fontSize: 20,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    usdCurrency(assetPrice),
-                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
-                      color: CustomColors.textPrimary,
-                      fontSize: 20,
-                    ),
-                  ),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                // crossAxisAlignment: CrossAxisAlignment.center,
-                spacing: 20,
-                children: [
-                  Expanded(
-                    child: Column(
-                      spacing: 15,
-                      children: [
-                        CustomTextField(
-                          controller: viewModel.priceController,
-                          labelText: 'Price',
-                          readOnly: true,
-                        ),
-                        CustomTextField(
-                          controller: viewModel.buyAmountController,
-                          labelText: 'You Buy',
-                          hintText: '0',
-                          onChanged: (value) {
-                            viewModel.onBuyChange(value, isCoin: true);
-                          },
-                        ),
-                        CustomTextField(
-                          controller: viewModel.buySpendController,
-                          labelText: 'You Spend (Est)',
-                          hintText: '10 - 10,000',
-                          onChanged: (value) {
-                            viewModel.onBuyChange(value, isCoin: false);
-                          },
-                        ),
-                        SizedBox(
-                          width: double.infinity,
-                          child: Card(
-                            color: CustomColors.neutral40,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                            child: Padding(
-                              padding: const EdgeInsets.all(10),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [Text('Available'), Text('balance')],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [Text('Max Buy'), Text('balance / coin')],
-                                  ),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                    children: [Text('Est Fee'), Text('0')],
-                                  ),
-                                ],
-                              ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          spacing: 15,
+          children: [
+            Text(
+              'Market Price',
+              style: Theme.of(
+                context,
+              ).textTheme.labelLarge?.copyWith(color: CustomColors.textPrimary, fontSize: 20),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircleAvatarWidget(radius: 20, isSvg: true, assetPath: asset.logoAsset),
+                const SizedBox(width: 5),
+                Text(
+                  '$assetSymbol',
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelMedium?.copyWith(color: CustomColors.textPrimary, fontSize: 20),
+                ),
+                const SizedBox(width: 10),
+                Text(
+                  usdCurrency(assetPrice),
+                  style: Theme.of(
+                    context,
+                  ).textTheme.labelMedium?.copyWith(color: CustomColors.textPrimary, fontSize: 20),
+                ),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              // crossAxisAlignment: CrossAxisAlignment.center,
+              spacing: 20,
+              children: [
+                Expanded(
+                  child: Column(
+                    spacing: 15,
+                    children: [
+                      CustomTextField(
+                        controller: viewModel.priceController,
+                        labelText: 'Price',
+                        readOnly: true,
+                      ),
+                      CustomTextField(
+                        controller: viewModel.buyAmountController,
+                        labelText: 'You Buy',
+                        hintText: '0',
+                        onChanged: (value) {
+                          viewModel.onBuyChange(value, isCoin: true);
+                        },
+                      ),
+                      CustomTextField(
+                        controller: viewModel.buySpendController,
+                        labelText: 'You Spend (Est)',
+                        hintText: '10 - 10,000',
+                        onChanged: (value) {
+                          viewModel.onBuyChange(value, isCoin: false);
+                        },
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Card(
+                          color: CustomColors.neutral40,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              spacing: 15,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [Text('Available'), Text('usd')],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [Text('Max Buy'), Text(' coin')],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [Text('Est Fee'), Text('0')],
+                                ),
+                              ],
                             ),
                           ),
                         ),
-                        CustomButton(onPressed: () => {}, text: 'Buy'),
-                      ],
-                    ),
+                      ),
+                      CustomButton(onPressed: viewModel.onBuyPressed, text: 'Buy'),
+                    ],
                   ),
-                  Expanded(
-                    child: Column(
-                      spacing: 15,
-                      children: [
-                        CustomTextField(
-                          controller: viewModel.priceController,
-                          labelText: 'Price',
-                          readOnly: true,
+                ),
+                Expanded(
+                  child: Column(
+                    spacing: 15,
+                    children: [
+                      CustomTextField(
+                        controller: viewModel.priceController,
+                        labelText: 'Price',
+                        readOnly: true,
+                      ),
+                      CustomTextField(
+                        controller: viewModel.sellAmountController,
+                        labelText: 'You Sell',
+                        hintText: '0',
+                        onChanged: (value) {
+                          viewModel.onBuyChange(value, isCoin: true);
+                        },
+                      ),
+                      CustomTextField(
+                        controller: viewModel.sellSpendController,
+                        labelText: 'You Receive (Est)',
+                        hintText: '10 - 10,000',
+                        onChanged: (value) {
+                          viewModel.onBuyChange(value, isCoin: false);
+                        },
+                      ),
+                      SizedBox(
+                        width: double.infinity,
+                        child: Card(
+                          color: CustomColors.neutral40,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10),
+                            child: Column(
+                              spacing: 15,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [Text('Available'), Text('coin')],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [Text('Max Sell'), Text('usd')],
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [Text('Est Fee'), Text('0')],
+                                ),
+                              ],
+                            ),
+                          ),
                         ),
-                        CustomButton(onPressed: () => {}, text: 'Sell'),
-                      ],
-                    ),
+                      ),
+                      CustomButton(onPressed: () => {}, text: 'Sell'),
+                    ],
                   ),
-                ],
-              ),
-            ],
-          ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

@@ -36,4 +36,9 @@ class OrderModel extends HiveObject {
   });
 
   double get total => price * amount;
+
+  @override
+  String toString() {
+    return 'OrderModel(symbol: $symbol, price: $price, amount: $amount, type: $type, timestamp: $timestamp, total: $total)';
+  }
 }
