@@ -7,6 +7,7 @@ class CustomButton extends StatelessWidget {
   final ButtonStyle? buttonStyle;
   final TextStyle? textStyle;
   final bool isWhite;
+  final bool isDisabled;
   const CustomButton({
     super.key,
     required this.onPressed,
@@ -14,12 +15,13 @@ class CustomButton extends StatelessWidget {
     this.buttonStyle,
     this.textStyle,
     this.isWhite = false,
+    this.isDisabled = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: isDisabled ? null : onPressed,
       style:
           buttonStyle ??
           ButtonStyle(
