@@ -8,7 +8,9 @@ import 'package:trading_sample_app/ui/views/root/root_viewmodel.dart';
 import 'package:trading_sample_app/ui/views/root/widgets/bottom_navigation_bar.dart';
 
 class RootView extends StackedView<RootViewmodel> {
-  const RootView({super.key});
+  final int pageIndex;
+
+  const RootView({super.key, this.pageIndex = 0});
 
   @override
   Widget builder(BuildContext context, viewModel, Widget? child) {
@@ -41,5 +43,5 @@ class RootView extends StackedView<RootViewmodel> {
   }
 
   @override
-  RootViewmodel viewModelBuilder(BuildContext context) => RootViewmodel();
+  RootViewmodel viewModelBuilder(BuildContext context) => RootViewmodel(pageIndex);
 }

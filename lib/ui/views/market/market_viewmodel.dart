@@ -149,7 +149,10 @@ class MarketViewmodel extends ReactiveViewModel {
   }
 
   void navigateToPortfolio() {
-    _navigationService.navigateTo(Routes.portfolioView);
+    _navigationService.clearStackAndShow(
+      Routes.rootView,
+      arguments: const RootViewArguments(pageIndex: 1),
+    );
   }
 
   void validateBuyInputs(OrderModel orderModel) {
