@@ -16,6 +16,7 @@ class MarketView extends StackedView<MarketViewmodel> {
   @override
   void onViewModelReady(MarketViewmodel viewModel) {
     viewModel.getSymbolData(asset);
+    viewModel.loadOwnedCoin(asset);
     super.onViewModelReady(viewModel);
   }
 
@@ -76,7 +77,7 @@ class MarketView extends StackedView<MarketViewmodel> {
                       ),
                       CustomTextField(
                         controller: viewModel.buyAmountController,
-                        labelText: 'You Buy',
+                        labelText: 'You Buy (Est)',
                         hintText: '0',
                         onChanged: (value) {
                           viewModel.onBuyChange(value, isCoin: true);
@@ -103,11 +104,16 @@ class MarketView extends StackedView<MarketViewmodel> {
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [Text('Available'), Text('usd')],
+                                  children: [Text('Available'), Text(viewModel.avBuyBalance)],
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [Text('Max Buy'), Text(' coin')],
+                                  children: [
+                                    Text('Max Buy'),
+                                    Text(
+                                      '${viewModel.maxBuy} (${viewModel.currentAsset?.base?.toUpperCase()})',
+                                    ),
+                                  ],
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -118,7 +124,11 @@ class MarketView extends StackedView<MarketViewmodel> {
                           ),
                         ),
                       ),
-                      CustomButton(onPressed: viewModel.onBuyPressed, text: 'Buy'),
+                      CustomButton(
+                        onPressed: viewModel.onBuyPressed,
+                        isDisabled: viewModel.isLoading,
+                        text: 'Buy',
+                      ),
                     ],
                   ),
                 ),
@@ -160,11 +170,16 @@ class MarketView extends StackedView<MarketViewmodel> {
                               children: [
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [Text('Available'), Text('coin')],
+                                  children: [
+                                    Text('Available'),
+                                    Text(
+                                      '${viewModel.avSellBalance} (${viewModel.currentAsset?.base?.toUpperCase()})',
+                                    ),
+                                  ],
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [Text('Max Sell'), Text('usd')],
+                                  children: [Text('Max Sell'), Text(viewModel.maxSell)],
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -175,7 +190,11 @@ class MarketView extends StackedView<MarketViewmodel> {
                           ),
                         ),
                       ),
-                      CustomButton(onPressed: () => {}, text: 'Sell'),
+                      CustomButton(
+                        onPressed: viewModel.onSellPressed,
+                        isDisabled: viewModel.isLoading,
+                        text: 'Sell',
+                      ),
                     ],
                   ),
                 ),

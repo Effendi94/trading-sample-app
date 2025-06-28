@@ -6,6 +6,7 @@ import 'package:trading_sample_app/app/services/order_service.dart';
 import 'package:trading_sample_app/app/services/profile_service.dart';
 import 'package:trading_sample_app/ui/views/market/market_view.dart';
 import 'package:trading_sample_app/ui/views/order/order_view.dart';
+import 'package:trading_sample_app/ui/views/portfolio/portfolio_view.dart';
 import 'package:trading_sample_app/ui/views/root/root_view.dart';
 
 @StackedApp(
@@ -13,6 +14,7 @@ import 'package:trading_sample_app/ui/views/root/root_view.dart';
     MaterialRoute(page: RootView, initial: true),
     MaterialRoute(page: OrderView, path: 'orderView'),
     MaterialRoute(page: MarketView, path: 'marketView'),
+    MaterialRoute(page: PortfolioView, path: 'PortfolioView'),
   ],
   dependencies: [
     LazySingleton(classType: NavigationService),

@@ -14,6 +14,18 @@ class OrderService with ListenableServiceMixin {
     _orders.value = _hive.orderBox.values.toList().reversed.toList();
   }
 
+  Future<double> coinBalance(String symbol) async {
+    final box = _hive.orderBox;
+    final relevantOrders = box.values.where((o) => o.symbol == symbol);
+
+    double total = 0.0;
+    for (var order in relevantOrders) {
+      total += (order.type == OrderType.buy ? order.amount : -order.amount);
+    }
+
+    return total;
+  }
+
   Future<void> placeOrder(OrderModel order) async {
     await _hive.orderBox.add(order);
     _orders.value = _hive.orderBox.values.toList().reversed.toList();
