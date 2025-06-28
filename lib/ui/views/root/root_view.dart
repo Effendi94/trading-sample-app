@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:trading_sample_app/app/constants/custom_colors.dart';
 import 'package:trading_sample_app/ui/views/home/home_view.dart';
-import 'package:trading_sample_app/ui/views/market/market_view.dart';
 import 'package:trading_sample_app/ui/views/portfolio/portfolio_view.dart';
 import 'package:trading_sample_app/ui/views/profile/profile_view.dart';
 import 'package:trading_sample_app/ui/views/root/root_viewmodel.dart';
@@ -16,7 +15,7 @@ class RootView extends StackedView<RootViewmodel> {
     return Scaffold(
       body: IndexedStack(
         index: viewModel.currentIndex,
-        children: const [HomeView(), MarketView(), PortfolioView(), ProfileView()],
+        children: const [HomeView(), PortfolioView(), ProfileView()],
       ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(

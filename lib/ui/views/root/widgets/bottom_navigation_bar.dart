@@ -9,7 +9,7 @@ import 'package:trading_sample_app/ui/views/root/root_viewmodel.dart';
 
 final List<StaticModel> bottomNavigationList = [
   StaticModel(code: IconConstants.homeIcon, desc: 'home'),
-  StaticModel(code: IconConstants.marketIcon, desc: 'market'),
+  // StaticModel(code: IconConstants.marketIcon, desc: 'market'),
   StaticModel(code: IconConstants.portfolioIcon, desc: 'portfolio'),
   StaticModel(code: IconConstants.profileIcon, desc: 'profile'),
 ];

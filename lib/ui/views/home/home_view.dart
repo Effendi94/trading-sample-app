@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:trading_sample_app/app/constants/custom_colors.dart';
+import 'package:trading_sample_app/app/helper/format_helpers.dart';
 import 'package:trading_sample_app/app/helper/string_extentions.dart';
 import 'package:trading_sample_app/app/helper/ui_helpers.dart';
 import 'package:trading_sample_app/ui/shared/circle_avatar_widget.dart';
@@ -34,7 +35,9 @@ class HomeView extends StackedView<HomeViewmodel> {
                 ),
                 child: Padding(
                   padding: const EdgeInsets.all(10),
-                  child: Column(children: [Text('Welcome ;;'), Text('Make your investment today')]),
+                  child: Column(
+                    children: [Text('Welcome Trader'), Text('Make your investment today')],
+                  ),
                 ),
               ),
               Text('List Coins', style: Theme.of(context).textTheme.labelLarge),
@@ -44,9 +47,9 @@ class HomeView extends StackedView<HomeViewmodel> {
                 separatorBuilder: (context, index) => const SizedBox(height: 8),
                 itemBuilder: (context, idx) {
                   final asset = viewModel.listAssets[idx];
-                  // debugPrint(asset.toString());
                   return ListTile(
-                    tileColor: CustomColors.neutral20,
+                    onTap: () => viewModel.navigateToOrderView(asset),
+                    tileColor: CustomColors.neutral40,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12), // Rounded corners
@@ -62,7 +65,7 @@ class HomeView extends StackedView<HomeViewmodel> {
                         viewModel.isWebsocketLoading
                             ? ShimmerWidget(width: screenWidth(context) * .08)
                             : Text(
-                              '${asset.price}',
+                              usdCurrency(asset.price),
                               style: Theme.of(
                                 context,
                               ).textTheme.labelLarge?.copyWith(color: CustomColors.black),

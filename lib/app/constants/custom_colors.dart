@@ -30,7 +30,6 @@ class CustomColors {
   static Color neutralBlack3 = const Color(0xFF51657B);
   static Color supportPiercingRed10 = const Color(0xFFFBE7E9);
   static Color supportFluorescentOrange30 = const Color(0xFFFFE780);
-  static Color danaRayaYellow = const Color(0xFFFFA722);
   static Color stateBlue20 = const Color(0xFFD5E9FA);
   static Color stateError = const Color(0xFFD70C24);
   static Color stateInfo = const Color(0xFF1BB0DF);

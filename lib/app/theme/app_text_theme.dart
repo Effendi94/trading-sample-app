@@ -1,16 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:trading_sample_app/app/constants/custom_colors.dart';
 
 class AppTextTheme {
-  static TextTheme getThemeText() => const TextTheme(
+  static TextTheme getThemeText() => TextTheme(
     // Bold
-    headlineSmall: TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.white),
+    headlineSmall: TextStyle(
+      fontSize: 24,
+      fontWeight: FontWeight.bold,
+      color: CustomColors.textPrimary,
+    ),
     // Bold
-    bodyLarge: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Color(0xFF03213E)),
+    bodyLarge: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.bold,
+      color: CustomColors.textPrimary,
+    ),
     // Regular
-    bodyMedium: TextStyle(fontSize: 14, fontWeight: FontWeight.normal, color: Color(0xffF8F9FA)),
+    bodyMedium: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.normal,
+      color: CustomColors.textPrimary,
+    ),
     // Regular
-    bodySmall: TextStyle(fontSize: 12, fontWeight: FontWeight.normal, color: Color(0xff66788A)),
+    bodySmall: TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.normal,
+      color: CustomColors.textPrimary,
+    ),
     // Bold
-    labelLarge: TextStyle(fontSize: 16, color: Colors.white, fontWeight: FontWeight.bold),
+    labelLarge: TextStyle(
+      fontSize: 16,
+      color: CustomColors.textPrimary,
+      fontWeight: FontWeight.bold,
+    ),
   );
 }

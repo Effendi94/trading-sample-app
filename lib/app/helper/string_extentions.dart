@@ -12,6 +12,10 @@ extension StringExtensions on String {
   }
 
   String get toUcWord {
-    return replaceFirstMapped(RegExp(r'^[a-z]'), (match) => match.group(0)!.toUpperCase());
+    return split(' ')
+        .map(
+          (word) => word.isNotEmpty ? word[0].toUpperCase() + word.substring(1).toLowerCase() : '',
+        )
+        .join(' ');
   }
 }

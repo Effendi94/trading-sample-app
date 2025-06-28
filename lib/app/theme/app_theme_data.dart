@@ -8,8 +8,8 @@ ThemeData appThemeData(BuildContext context) {
     colorScheme: ColorScheme.fromSwatch().copyWith(secondary: CustomColors.brandBluePrimary),
     fontFamily: Common.defaultFontFamily,
     textTheme: AppTextTheme.getThemeText(),
-    scaffoldBackgroundColor: CustomColors.brandPrimary,
-    primaryColor: CustomColors.textWhite,
+    scaffoldBackgroundColor: CustomColors.neutralWhite,
+    primaryColor: CustomColors.textPrimary,
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ButtonStyle(
         backgroundColor: WidgetStateProperty.resolveWith<Color>((Set<WidgetState> states) {
@@ -18,7 +18,9 @@ ThemeData appThemeData(BuildContext context) {
           }
           return CustomColors.brandBlueSecondary;
         }),
-        shape: WidgetStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(8))),
+        shape: WidgetStateProperty.all(
+          RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+        ),
       ),
     ),
   );
