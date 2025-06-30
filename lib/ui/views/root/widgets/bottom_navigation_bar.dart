@@ -23,7 +23,7 @@ class BottomNavigationBarWidget extends ViewModelWidget<RootViewmodel> {
       currentIndex: viewModel.currentIndex,
       selectedItemColor: Colors.white,
       unselectedItemColor: Colors.grey,
-      onTap: viewModel.setIndex,
+      onTap: viewModel.onClickBottomBar,
       type: BottomNavigationBarType.fixed,
       backgroundColor: Colors.transparent,
       elevation: 0,

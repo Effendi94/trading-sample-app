@@ -15,10 +15,7 @@ class RootView extends StackedView<RootViewmodel> {
   @override
   Widget builder(BuildContext context, viewModel, Widget? child) {
     return Scaffold(
-      body: IndexedStack(
-        index: viewModel.currentIndex,
-        children: const [HomeView(), PortfolioView(), ProfileView()],
-      ),
+      body: getViewForIndex(viewModel.currentIndex),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: CustomColors.brandSecondary,
@@ -40,6 +37,19 @@ class RootView extends StackedView<RootViewmodel> {
         ),
       ),
     );
+  }
+
+  Widget getViewForIndex(int index) {
+    switch (index) {
+      case 0:
+        return HomeView();
+      case 1:
+        return PortfolioView();
+      case 2:
+        return ProfileView();
+      default:
+        return HomeView();
+    }
   }
 
   @override

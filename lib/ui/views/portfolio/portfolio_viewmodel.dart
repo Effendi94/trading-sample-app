@@ -1,16 +1,20 @@
-import 'dart:convert';
 import 'dart:developer';
 
 import 'package:stacked/stacked.dart';
 import 'package:trading_sample_app/app/app.locator.dart';
+import 'package:trading_sample_app/app/helper/format_helpers.dart';
 import 'package:trading_sample_app/app/models/order_model.dart';
 import 'package:trading_sample_app/app/models/portfolio_model.dart';
 import 'package:trading_sample_app/app/services/order_service.dart';
+import 'package:trading_sample_app/app/services/profile_service.dart';
 
 class PortfolioViewmodel extends ReactiveViewModel {
   final OrderService _orderService = locator<OrderService>();
+  final ProfileService _profileService = locator<ProfileService>();
 
   List<OrderModel> get listOrders => _orderService.orders;
+
+  String get profileBalance => usdCurrency(_profileService.balance);
 
   List<PortfolioModel> get holdingOrders {
     final Map<String, PortfolioModel> map = {};
@@ -44,7 +48,7 @@ class PortfolioViewmodel extends ReactiveViewModel {
     // final jsonList = listOrders.map((e) => e.toJson()).toList();
     // final data = jsonEncode(jsonList);
     // log(data);
-    log('list orders : ${listOrders.toString()}');
+    // log('list orders : ${listOrders.toString()}');
     // log(jsonEncode(holdingOrders.map((e) => e.toJson()).toList()));
   }
 

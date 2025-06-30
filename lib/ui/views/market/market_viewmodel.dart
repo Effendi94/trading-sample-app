@@ -74,8 +74,11 @@ class MarketViewmodel extends ReactiveViewModel {
       final String currentSymbol = currentAsset?.symbol ?? '';
       final double currentPrice = currentAsset?.price ?? 0;
       final double usdAmount = double.tryParse(buySpendController.text) ?? 0;
+      final double finalUsdAmount = (usdAmount * 100).floorToDouble() / 100;
+
       final double coinAmount = usdAmount / currentPrice;
       final double finalCoinAmount = (coinAmount * 1000000).floorToDouble() / 1000000;
+      final double profileBalance = profile?.balance ?? 0;
 
       final order = OrderModel(
         type: OrderType.buy,
@@ -84,10 +87,10 @@ class MarketViewmodel extends ReactiveViewModel {
         price: currentPrice,
         timestamp: DateTime.now(),
       );
-      log(order.toString());
       validateBuyInputs(order);
-      await Future.delayed(Duration(seconds: 2));
       await _orderService.placeOrder(order);
+      final double newBalance = profileBalance - finalUsdAmount;
+      await _profileService.updateBalance(newBalance);
       navigateToPortfolio();
     } on FormatException catch (e) {
       _snackbarService.showCustomSnackBar(

@@ -9,12 +9,39 @@ class OrderService with ListenableServiceMixin {
   final _hive = locator<HiveService>();
   final _orders = ReactiveValue<List<OrderModel>>([]);
 
-  List<OrderModel> get orders => _orders.value;
+  List<OrderModel> get orders => enrichedOrders;
 
   OrderService() {
     listenToReactiveValues([_orders]);
+    getOrders();
+    // _orders.value = _hive.orderBox.values.toList().reversed.toList();
+    // _orders.value = enrichedOrders;
+  }
+
+  List<OrderModel> get enrichedOrders {
+    return _orders.value.map((order) {
+      final matchedAsset = Common.listAssets.firstWhere(
+        (asset) => asset.symbol?.toLowerCase() == order.symbol.toLowerCase(),
+        orElse:
+            () => AssetModel(
+              name: order.symbol,
+              base: order.symbol.substring(0, 3),
+              symbol: order.symbol,
+              logoAsset: '',
+            ),
+      );
+
+      return order.copyWith(asset: matchedAsset);
+    }).toList();
+  }
+
+  Future<void> getOrders() async {
     _orders.value = _hive.orderBox.values.toList().reversed.toList();
-    _orders.value = enrichedOrders;
+    notifyListeners();
+  }
+
+  Future<void> refreshOrders() async {
+    await getOrders();
   }
 
   Future<double> coinBalance(String symbol) async {
@@ -39,22 +66,5 @@ class OrderService with ListenableServiceMixin {
     await _hive.orderBox.clear();
     _orders.value = [];
     notifyListeners();
-  }
-
-  List<OrderModel> get enrichedOrders {
-    return orders.map((order) {
-      final matchedAsset = Common.listAssets.firstWhere(
-        (asset) => asset.symbol?.toLowerCase() == order.symbol.toLowerCase(),
-        orElse:
-            () => AssetModel(
-              name: order.symbol,
-              base: order.symbol.substring(0, 3),
-              symbol: order.symbol,
-              logoAsset: '',
-            ),
-      );
-
-      return order.copyWith(asset: matchedAsset);
-    }).toList();
   }
 }
