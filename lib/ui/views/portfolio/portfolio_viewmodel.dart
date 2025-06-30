@@ -63,14 +63,6 @@ class PortfolioViewmodel extends ReactiveViewModel {
     return usdCurrency(result);
   }
 
-  void initData() {
-    // final jsonList = listOrders.map((e) => e.toJson()).toList();
-    // final data = jsonEncode(jsonList);
-    // log('data : $data');
-    // log('list orders : ${listOrders.toString()}');
-    // log(jsonEncode(holdingOrders.map((e) => e.toJson()).toList()));
-  }
-
   void navigateToMarketView(AssetModel? asset) {
     if (asset != null) {
       _navigationService.navigateTo(
