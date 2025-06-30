@@ -11,11 +11,11 @@ import 'package:trading_sample_app/ui/views/home/home_viewmodel.dart';
 class HomeView extends StackedView<HomeViewmodel> {
   const HomeView({super.key});
 
-  @override
-  void onViewModelReady(HomeViewmodel viewModel) {
-    viewModel.initData();
-    super.onViewModelReady(viewModel);
-  }
+  // @override
+  // void onViewModelReady(HomeViewmodel viewModel) {
+  //   viewModel.initData();
+  //   super.onViewModelReady(viewModel);
+  // }
 
   @override
   Widget builder(BuildContext context, HomeViewmodel viewModel, Widget? child) {

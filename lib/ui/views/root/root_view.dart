@@ -13,6 +13,12 @@ class RootView extends StackedView<RootViewmodel> {
   const RootView({super.key, this.pageIndex = 0});
 
   @override
+  void onViewModelReady(RootViewmodel viewModel) {
+    viewModel.initData();
+    super.onViewModelReady(viewModel);
+  }
+
+  @override
   Widget builder(BuildContext context, viewModel, Widget? child) {
     return Scaffold(
       body: getViewForIndex(viewModel.currentIndex),

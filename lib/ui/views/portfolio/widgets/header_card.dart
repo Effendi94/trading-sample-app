@@ -38,7 +38,7 @@ class HeaderCard extends StackedView<PortfolioViewmodel> {
                           ).textTheme.titleMedium?.copyWith(color: CustomColors.neutralWhite),
                         ),
                         Text(
-                          '~ 0',
+                          '~ ${viewModel.currentPortfolioValue}',
                           style: Theme.of(
                             context,
                           ).textTheme.titleMedium?.copyWith(color: CustomColors.neutralWhite),
@@ -55,7 +55,7 @@ class HeaderCard extends StackedView<PortfolioViewmodel> {
                           ).textTheme.titleMedium?.copyWith(color: CustomColors.neutralWhite),
                         ),
                         Text(
-                          '${viewModel.profileBalance}',
+                          viewModel.profileBalance,
                           style: Theme.of(
                             context,
                           ).textTheme.titleMedium?.copyWith(color: CustomColors.neutralWhite),
