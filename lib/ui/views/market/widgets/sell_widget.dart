@@ -2,12 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:trading_sample_app/app/constants/custom_colors.dart';
 import 'package:trading_sample_app/app/enums/trade_input_type.dart';
+import 'package:trading_sample_app/app/models/asset_model.dart';
 import 'package:trading_sample_app/ui/shared/custom_button.dart';
 import 'package:trading_sample_app/ui/shared/form/custom_text_field.dart';
 import 'package:trading_sample_app/ui/views/market/market_viewmodel.dart';
 
 class SellWidget extends StackedView<MarketViewmodel> {
-  const SellWidget({super.key});
+  final AssetModel asset;
+  const SellWidget({super.key, required this.asset});
+
+  @override
+  void onViewModelReady(MarketViewmodel viewModel) {
+    viewModel.loadOwnedCoin(asset);
+    super.onViewModelReady(viewModel);
+  }
 
   @override
   Widget builder(BuildContext context, MarketViewmodel viewModel, Widget? child) {

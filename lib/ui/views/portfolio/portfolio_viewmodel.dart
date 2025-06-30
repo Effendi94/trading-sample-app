@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:developer';
-
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:trading_sample_app/app/app.locator.dart';
@@ -22,30 +19,33 @@ class PortfolioViewmodel extends ReactiveViewModel {
   List<OrderModel> get listOrders => _orderService.orders;
   List<AssetModel> get listAssets => _webSocketService.listAssets;
   String get profileBalance => usdCurrency(_profileService.balance);
+  bool tes = true;
 
   List<PortfolioModel> get holdingOrders {
-    final Map<String, double> amountMap = {};
-    final Map<String, AssetModel?> assetMap = {};
+    final List<OrderModel> orders = listOrders;
 
-    for (var order in listOrders) {
+    final List<PortfolioModel> result = [];
+
+    for (final order in orders) {
       final symbol = order.symbol;
 
-      // Initialize values if not present
-      amountMap[symbol] =
-          (amountMap[symbol] ?? 0) + (order.type == OrderType.buy ? order.amount : -order.amount);
+      final existing = result.indexWhere(
+        (p) => p.asset?.symbol?.toLowerCase() == symbol.toLowerCase(),
+      );
 
-      assetMap[symbol] ??= order.asset;
+      final delta = order.type == OrderType.buy ? order.amount : -order.amount;
+
+      if (existing != -1) {
+        final current = result[existing];
+        final updatedAmount = (current.amount ?? 0) + delta;
+
+        result[existing] = current.copyWith(amount: updatedAmount);
+      } else {
+        result.add(PortfolioModel(amount: delta, asset: order.asset));
+      }
     }
 
-    final List<PortfolioModel> holdings = [];
-
-    amountMap.forEach((symbol, amount) {
-      if (amount > 0) {
-        holdings.add(PortfolioModel(amount: amount, asset: assetMap[symbol]));
-      }
-    });
-
-    return holdings;
+    return result.where((p) => (p.amount ?? 0) > 0).toList();
   }
 
   String get currentPortfolioValue {
@@ -68,23 +68,23 @@ class PortfolioViewmodel extends ReactiveViewModel {
     return usdCurrency(result);
   }
 
-  void initData() {
-    double totalBuy = 0;
-    double totalSell = 0;
-    log('total data : ${listOrders.length}');
-    final jsonList = listOrders.asMap().entries.forEach((entry) {
-      final index = entry.key + 1;
-      final order = entry.value;
-      if (order.type == OrderType.buy) {
-        totalBuy += order.amount;
-      } else if (order.type == OrderType.sell) {
-        totalSell += order.amount;
-      }
-      log('$index | key: ${order.key} | ${order.type.name} | ${order.symbol} | ${order.amount}');
-    });
+  void initData() async {
+    // double totalBuy = 0;
+    // double totalSell = 0;
+    // log('total data : ${listOrders.length}');
+    // final jsonList = listOrders.asMap().entries.forEach((entry) {
+    //   final index = entry.key + 1;
+    //   final order = entry.value;
+    //   if (order.type == OrderType.buy) {
+    //     totalBuy += order.amount;
+    //   } else if (order.type == OrderType.sell) {
+    //     totalSell += order.amount;
+    //   }
+    //   log('$index | key: ${order.key} | ${order.type.name} | ${order.symbol} | ${order.amount}');
+    // });
 
-    log('Total Buy Amount: $totalBuy');
-    log('Total Sell Amount: $totalSell');
+    // log('Total Buy Amount: $totalBuy');
+    // log('Total Sell Amount: $totalSell');
 
     // log('list orders : ${listOrders.toString()}');
     // log(jsonEncode(holdingOrders.map((e) => e.toJson()).toList()));

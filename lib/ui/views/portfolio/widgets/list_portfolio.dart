@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:trading_sample_app/app/constants/custom_colors.dart';
@@ -30,7 +28,9 @@ class ListPortfolio extends StackedView<PortfolioViewmodel> {
               ),
               leading: CircleAvatarWidget(radius: 20, isSvg: true, assetPath: asset?.logoAsset),
               title: Text(asset?.name?.toUcWord ?? ''),
-              subtitle: Text('${item.amount} ${asset?.base?.toUpperCase() ?? ''}'),
+              subtitle: Text(
+                '${item.amount?.toStringAsFixed(6)} ${asset?.base?.toUpperCase() ?? ''}',
+              ),
             );
           },
         ),

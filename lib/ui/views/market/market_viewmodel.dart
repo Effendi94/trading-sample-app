@@ -55,7 +55,7 @@ class MarketViewmodel extends ReactiveViewModel {
 
   String get avSellBalance {
     // return '';
-    return currentOwned.toString();
+    return currentOwned.toStringAsFixed(6);
   }
 
   String get maxSell {
@@ -268,10 +268,10 @@ class MarketViewmodel extends ReactiveViewModel {
 
   Future<void> loadOwnedCoin(AssetModel asset) async {
     final symbol = asset.symbol;
-    log(symbol ?? '');
+    // log(symbol ?? '');
     if (symbol == null || symbol.isEmpty) return;
     final result = await _orderService.coinBalance(symbol);
-    log('coin : $result');
+    // log('coin : $result');
     _currentOwned.value = result;
     notifyListeners();
   }

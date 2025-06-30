@@ -17,7 +17,7 @@ class MarketView extends StackedView<MarketViewmodel> {
   @override
   void onViewModelReady(MarketViewmodel viewModel) {
     viewModel.getSymbolData(asset);
-    viewModel.loadOwnedCoin(asset);
+    // viewModel.loadOwnedCoin(asset);
     super.onViewModelReady(viewModel);
   }
 
@@ -66,7 +66,7 @@ class MarketView extends StackedView<MarketViewmodel> {
               mainAxisAlignment: MainAxisAlignment.center,
               // crossAxisAlignment: CrossAxisAlignment.center,
               spacing: 20,
-              children: [BuyWidget(), SellWidget()],
+              children: [BuyWidget(), SellWidget(asset: asset)],
             ),
           ],
         ),
