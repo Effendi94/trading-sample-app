@@ -23,7 +23,7 @@ class MarketViewmodel extends ReactiveViewModel {
   final OrderService _orderService = locator<OrderService>();
   final ProfileService _profileService = locator<ProfileService>();
   final SnackbarService _snackbarService = locator<SnackbarService>();
-  final ReactiveValue<bool> _isLoading = ReactiveValue<bool>(false);
+  final ReactiveValue<bool> _isLoading = ReactiveValue<bool>(true);
   final ReactiveValue<double> _currentOwned = ReactiveValue<double>(0.0);
 
   final priceController = TextEditingController();
@@ -212,15 +212,19 @@ class MarketViewmodel extends ReactiveViewModel {
 
   Future<void> loadOwnedCoin(AssetModel asset) async {
     final symbol = asset.symbol;
+    log(symbol ?? '');
     if (symbol == null || symbol.isEmpty) return;
     final result = await _orderService.coinBalance(symbol);
+    log('coin : $result');
     _currentOwned.value = result;
     notifyListeners();
   }
 
   void getSymbolData(AssetModel asset) {
+    _isLoading.value = true;
     _webSocketService.updateAsset = asset;
     _webSocketService.getSymbol(asset.symbol);
+    notifyListeners();
   }
 
   void resetInputs() {
@@ -255,6 +259,9 @@ class MarketViewmodel extends ReactiveViewModel {
         SchedulerBinding.instance.addPostFrameCallback((_) {
           priceController.text = '${asset.price}';
         });
+        if (asset.price != null && asset.price! > 0) {
+          _isLoading.value = false;
+        }
         notifyListeners();
       }
     };

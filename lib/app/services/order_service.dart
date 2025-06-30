@@ -46,7 +46,7 @@ class OrderService with ListenableServiceMixin {
 
   Future<double> coinBalance(String symbol) async {
     final box = _hive.orderBox;
-    final relevantOrders = box.values.where((o) => o.symbol == symbol);
+    final relevantOrders = box.values.where((o) => o.symbol.toLowerCase() == symbol.toLowerCase());
 
     double total = 0.0;
     for (var order in relevantOrders) {

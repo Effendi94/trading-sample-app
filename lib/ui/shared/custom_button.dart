@@ -28,7 +28,7 @@ class CustomButton extends StatelessWidget {
             elevation: isWhite ? WidgetStateProperty.all(0) : null,
             backgroundColor: WidgetStateProperty.resolveWith((states) {
               if (states.contains(WidgetState.disabled)) {
-                return const Color(0xffCED3D7);
+                return CustomColors.greyGray4;
               }
               return isWhite ? CustomColors.neutralWhite : CustomColors.brandBluePrimary;
             }),
