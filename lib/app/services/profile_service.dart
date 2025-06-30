@@ -35,7 +35,12 @@ class ProfileService with ListenableServiceMixin {
       await box.put(_profileKey, dummy);
     }
 
-    _profile.value = box.get(_profileKey);
+    getProfile();
+  }
+
+  Future<void> getProfile() async {
+    _profile.value = _hive.profileBox.get(_profileKey);
+    notifyListeners();
   }
 
   Future<void> updateProfile(ProfileModel updated) async {

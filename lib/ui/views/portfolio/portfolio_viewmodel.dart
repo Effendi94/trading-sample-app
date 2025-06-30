@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
 import 'package:trading_sample_app/app/app.locator.dart';
@@ -21,26 +24,28 @@ class PortfolioViewmodel extends ReactiveViewModel {
   String get profileBalance => usdCurrency(_profileService.balance);
 
   List<PortfolioModel> get holdingOrders {
-    final Map<String, PortfolioModel> map = {};
-    late double updatedAmount = 0;
+    final Map<String, double> amountMap = {};
+    final Map<String, AssetModel?> assetMap = {};
+
     for (var order in listOrders) {
-      if (!map.containsKey(order.symbol)) {
-        map[order.symbol] = PortfolioModel(amount: 0, asset: order.asset);
-      }
+      final symbol = order.symbol;
 
-      final current = map[order.symbol]!;
+      // Initialize values if not present
+      amountMap[symbol] =
+          (amountMap[symbol] ?? 0) + (order.type == OrderType.buy ? order.amount : -order.amount);
 
-      if (order.type == OrderType.buy) {
-        updatedAmount += order.amount;
-      } else {
-        updatedAmount -= order.amount;
-      }
-      // current.amount + (order.type == OrderType.buy ? order.amount : -order.amount);
-
-      map[order.symbol] = current.copyWith(amount: updatedAmount);
+      assetMap[symbol] ??= order.asset;
     }
 
-    return map.values.where((o) => o.amount! > 0).toList();
+    final List<PortfolioModel> holdings = [];
+
+    amountMap.forEach((symbol, amount) {
+      if (amount > 0) {
+        holdings.add(PortfolioModel(amount: amount, asset: assetMap[symbol]));
+      }
+    });
+
+    return holdings;
   }
 
   String get currentPortfolioValue {
@@ -61,6 +66,28 @@ class PortfolioViewmodel extends ReactiveViewModel {
 
     final result = double.parse(total.toStringAsFixed(2));
     return usdCurrency(result);
+  }
+
+  void initData() {
+    double totalBuy = 0;
+    double totalSell = 0;
+    log('total data : ${listOrders.length}');
+    final jsonList = listOrders.asMap().entries.forEach((entry) {
+      final index = entry.key + 1;
+      final order = entry.value;
+      if (order.type == OrderType.buy) {
+        totalBuy += order.amount;
+      } else if (order.type == OrderType.sell) {
+        totalSell += order.amount;
+      }
+      log('$index | key: ${order.key} | ${order.type.name} | ${order.symbol} | ${order.amount}');
+    });
+
+    log('Total Buy Amount: $totalBuy');
+    log('Total Sell Amount: $totalSell');
+
+    // log('list orders : ${listOrders.toString()}');
+    // log(jsonEncode(holdingOrders.map((e) => e.toJson()).toList()));
   }
 
   void navigateToMarketView(AssetModel? asset) {

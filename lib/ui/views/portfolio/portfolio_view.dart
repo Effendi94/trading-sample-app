@@ -9,6 +9,12 @@ class PortfolioView extends StackedView<PortfolioViewmodel> {
   const PortfolioView({super.key});
 
   @override
+  void onViewModelReady(PortfolioViewmodel viewModel) {
+    viewModel.initData();
+    super.onViewModelReady(viewModel);
+  }
+
+  @override
   Widget builder(BuildContext context, PortfolioViewmodel viewModel, Widget? child) {
     return Scaffold(
       // appBar: AppBar(title: Text('Portfolio')),

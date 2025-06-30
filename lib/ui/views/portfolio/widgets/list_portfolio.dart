@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:trading_sample_app/app/constants/custom_colors.dart';
@@ -13,6 +15,7 @@ class ListPortfolio extends StackedView<PortfolioViewmodel> {
     if (viewModel.holdingOrders.isNotEmpty) {
       return Expanded(
         child: ListView.separated(
+          physics: ClampingScrollPhysics(),
           itemCount: viewModel.holdingOrders.length,
           separatorBuilder: (context, index) => const SizedBox(height: 8),
           itemBuilder: (context, idx) {

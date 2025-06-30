@@ -27,11 +27,11 @@ class MarketViewmodel extends ReactiveViewModel {
   final ReactiveValue<double> _currentOwned = ReactiveValue<double>(0.0);
 
   final priceController = TextEditingController();
-  final buyAmountController = TextEditingController();
-  final buySpendController = TextEditingController();
+  final buyCoinController = TextEditingController();
+  final buyUsdController = TextEditingController();
 
-  final sellAmountController = TextEditingController();
-  final sellSpendController = TextEditingController();
+  final sellCoinController = TextEditingController();
+  final sellUsdController = TextEditingController();
   AssetModel? get currentAsset => _webSocketService.currentAsset;
   WebSocketChannel? get channel => _webSocketService.symbolChannel;
   ProfileModel? get profile => _profileService.profile;
@@ -80,14 +80,14 @@ class MarketViewmodel extends ReactiveViewModel {
 
       switch (_lastInputType) {
         case TradeInputType.coin:
-          coinAmount = double.tryParse(buyAmountController.text) ?? 0;
+          coinAmount = double.tryParse(buyCoinController.text) ?? 0;
           coinAmount = (coinAmount * 1000000).floorToDouble() / 1000000;
           usdAmount = coinAmount * currentPrice;
           usdAmount = (usdAmount * 100).floorToDouble() / 100;
           break;
 
         case TradeInputType.usd:
-          usdAmount = double.tryParse(buySpendController.text) ?? 0;
+          usdAmount = double.tryParse(buyUsdController.text) ?? 0;
           usdAmount = (usdAmount * 100).floorToDouble() / 100;
           coinAmount = usdAmount / currentPrice;
           coinAmount = (coinAmount * 1000000).floorToDouble() / 1000000;
@@ -130,24 +130,43 @@ class MarketViewmodel extends ReactiveViewModel {
   Future<void> onSellPressed() async {
     try {
       _isLoading.value = true;
+
       final String currentSymbol = currentAsset?.symbol ?? '';
       final double currentPrice = currentAsset?.price ?? 0;
-      final double usdAmount = double.tryParse(sellSpendController.text) ?? 0;
-      final double coinAmount = usdAmount / currentPrice;
-      final double finalCoinAmount = (coinAmount * 100).floorToDouble() / 100;
+      final double profileBalance = profile?.balance ?? 0;
+
+      double usdAmount = 0;
+      double coinAmount = 0;
+
+      switch (_lastInputType) {
+        case TradeInputType.coin:
+          coinAmount = double.tryParse(sellCoinController.text) ?? 0;
+          coinAmount = (coinAmount * 1000000).floorToDouble() / 1000000;
+          usdAmount = coinAmount * currentPrice;
+          usdAmount = (usdAmount * 100).floorToDouble() / 100;
+          break;
+
+        case TradeInputType.usd:
+          usdAmount = double.tryParse(sellUsdController.text) ?? 0;
+          usdAmount = (usdAmount * 100).floorToDouble() / 100;
+          coinAmount = usdAmount / currentPrice;
+          coinAmount = (coinAmount * 1000000).floorToDouble() / 1000000;
+          break;
+      }
 
       final order = OrderModel(
         type: OrderType.sell,
         symbol: currentSymbol,
-        amount: finalCoinAmount,
+        amount: coinAmount,
         price: currentPrice,
         timestamp: DateTime.now(),
       );
-      log(order.toString());
-      return;
-      validateBuyInputs(order);
-      await Future.delayed(Duration(seconds: 2));
+
+      validateSellInputs(order, currentOwned);
+
       await _orderService.placeOrder(order);
+      final double newBalance = profileBalance + usdAmount;
+      await _profileService.updateBalance(newBalance);
       navigateToPortfolio();
     } on FormatException catch (e) {
       _snackbarService.showCustomSnackBar(
@@ -157,14 +176,14 @@ class MarketViewmodel extends ReactiveViewModel {
         message: e.message,
       );
     } catch (e, stackTrace) {
-      log('Buy Order Error: $e', stackTrace: stackTrace);
+      log('Sell Order Error: $e', stackTrace: stackTrace);
       _snackbarService.showCustomSnackBar(
         variant: SnackbarType.error,
         title: 'Order Failed',
-        message: 'Something wrong when processing your order, try again!',
+        message: 'Something went wrong while processing your sell order.',
       );
     } finally {
-      _isLoading.value = false; // ✅ Always reset loading here
+      _isLoading.value = false;
     }
   }
 
@@ -192,20 +211,57 @@ class MarketViewmodel extends ReactiveViewModel {
     }
   }
 
+  void validateSellInputs(OrderModel orderModel, double ownedCoin) {
+    if (orderModel.symbol.isEmpty) {
+      throw FormatException('Symbol is required.');
+    }
+    if (orderModel.amount <= 0) {
+      throw FormatException('Amount must be greater than 0.');
+    }
+    if (orderModel.price <= 0) {
+      throw FormatException('Price must be greater than 0.');
+    }
+    if (orderModel.amount > ownedCoin) {
+      throw FormatException(
+        'Insufficient coin balance. You only have ${ownedCoin.toStringAsFixed(6)} available.',
+      );
+    }
+  }
+
   void onBuyChange(String? value, {required TradeInputType inputType}) {
     _lastInputType = inputType;
     final double parsed = double.tryParse(value ?? '0') ?? 0;
-    final double currentPrice = double.tryParse(priceController.text) ?? 0;
+    final double currentPrice = currentAsset?.price ?? 0;
     switch (inputType) {
       case TradeInputType.coin:
         final double usd = parsed * currentPrice;
         final double roundedUsd = (usd * 100).floorToDouble() / 100;
-        buySpendController.text = roundedUsd.toStringAsFixed(2);
+        buyUsdController.text = roundedUsd.toStringAsFixed(2);
         break;
       case TradeInputType.usd:
         final double coin = parsed / currentPrice;
-        final double roundedCoin = (coin * 100).floorToDouble() / 100;
-        buyAmountController.text = roundedCoin.toStringAsFixed(2);
+        final double roundedCoin = (coin * 1000000).floorToDouble() / 1000000;
+        buyCoinController.text = roundedCoin.toStringAsFixed(6);
+        break;
+    }
+  }
+
+  void onSellChange(String? value, {required TradeInputType inputType}) {
+    _lastInputType = inputType;
+    final double parsed = double.tryParse(value ?? '0') ?? 0;
+    final double currentPrice = double.tryParse(priceController.text) ?? 0;
+
+    switch (inputType) {
+      case TradeInputType.coin:
+        final double usd = parsed * currentPrice;
+        final double roundedUsd = (usd * 100).floorToDouble() / 100;
+        sellUsdController.text = roundedUsd.toStringAsFixed(2);
+        break;
+
+      case TradeInputType.usd:
+        final double coin = parsed / currentPrice;
+        final double roundedCoin = (coin * 1000000).floorToDouble() / 1000000;
+        sellCoinController.text = roundedCoin.toStringAsFixed(6);
         break;
     }
   }
@@ -228,18 +284,18 @@ class MarketViewmodel extends ReactiveViewModel {
   }
 
   void resetInputs() {
-    buyAmountController.clear();
-    buySpendController.clear();
-    sellAmountController.clear();
-    sellSpendController.clear();
+    buyCoinController.clear();
+    buyUsdController.clear();
+    sellCoinController.clear();
+    sellUsdController.clear();
   }
 
   void disposeAllcontroller() {
     priceController.dispose();
-    buyAmountController.dispose();
-    buySpendController.dispose();
-    sellAmountController.dispose();
-    sellSpendController.dispose();
+    buyCoinController.dispose();
+    buyUsdController.dispose();
+    sellCoinController.dispose();
+    sellUsdController.dispose();
   }
 
   @override
