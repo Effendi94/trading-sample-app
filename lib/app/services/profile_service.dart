@@ -17,6 +17,7 @@ class ProfileService with ListenableServiceMixin {
 
   ProfileService() {
     listenToReactiveValues([_profile]);
+    init();
   }
 
   Future<void> init() async {

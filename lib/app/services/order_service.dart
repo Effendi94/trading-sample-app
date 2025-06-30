@@ -1,5 +1,7 @@
 import 'package:stacked/stacked.dart';
 import 'package:trading_sample_app/app/app.locator.dart';
+import 'package:trading_sample_app/app/constants/common.dart';
+import 'package:trading_sample_app/app/models/asset_model.dart';
 import 'package:trading_sample_app/app/models/order_model.dart';
 import 'package:trading_sample_app/app/services/hive_service.dart';
 
@@ -12,6 +14,7 @@ class OrderService with ListenableServiceMixin {
   OrderService() {
     listenToReactiveValues([_orders]);
     _orders.value = _hive.orderBox.values.toList().reversed.toList();
+    _orders.value = enrichedOrders;
   }
 
   Future<double> coinBalance(String symbol) async {
@@ -36,5 +39,22 @@ class OrderService with ListenableServiceMixin {
     await _hive.orderBox.clear();
     _orders.value = [];
     notifyListeners();
+  }
+
+  List<OrderModel> get enrichedOrders {
+    return orders.map((order) {
+      final matchedAsset = Common.listAssets.firstWhere(
+        (asset) => asset.symbol?.toLowerCase() == order.symbol.toLowerCase(),
+        orElse:
+            () => AssetModel(
+              name: order.symbol,
+              base: order.symbol.substring(0, 3),
+              symbol: order.symbol,
+              logoAsset: '',
+            ),
+      );
+
+      return order.copyWith(asset: matchedAsset);
+    }).toList();
   }
 }
