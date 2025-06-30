@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 import 'package:trading_sample_app/app/constants/custom_colors.dart';
+import 'package:trading_sample_app/app/enums/trade_input_type.dart';
 import 'package:trading_sample_app/app/helper/format_helpers.dart';
 import 'package:trading_sample_app/app/helper/string_extentions.dart';
 import 'package:trading_sample_app/app/models/asset_model.dart';
@@ -77,18 +78,18 @@ class MarketView extends StackedView<MarketViewmodel> {
                       ),
                       CustomTextField(
                         controller: viewModel.buyAmountController,
-                        labelText: 'You Buy (Est)',
+                        labelText: 'You Buy (est)',
                         hintText: '0',
                         onChanged: (value) {
-                          viewModel.onBuyChange(value, isCoin: true);
+                          viewModel.onBuyChange(value, inputType: TradeInputType.coin);
                         },
                       ),
                       CustomTextField(
                         controller: viewModel.buySpendController,
-                        labelText: 'You Spend (Est)',
+                        labelText: 'You Spend (est)',
                         hintText: '10 - 10,000',
                         onChanged: (value) {
-                          viewModel.onBuyChange(value, isCoin: false);
+                          viewModel.onBuyChange(value, inputType: TradeInputType.usd);
                         },
                       ),
                       SizedBox(
@@ -117,7 +118,7 @@ class MarketView extends StackedView<MarketViewmodel> {
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [Text('Est Fee'), Text('0')],
+                                  children: [Text('est Fee'), Text('0')],
                                 ),
                               ],
                             ),
@@ -146,16 +147,17 @@ class MarketView extends StackedView<MarketViewmodel> {
                         labelText: 'You Sell',
                         hintText: '0',
                         onChanged: (value) {
-                          viewModel.onBuyChange(value, isCoin: true);
+                          viewModel.onBuyChange(value, inputType: TradeInputType.coin);
                         },
                       ),
                       CustomTextField(
                         controller: viewModel.sellSpendController,
-                        labelText: 'You Receive (Est)',
+                        labelText: 'You Receive (est)',
                         hintText: '10 - 10,000',
-                        onChanged: (value) {
-                          viewModel.onBuyChange(value, isCoin: false);
-                        },
+                        // onChanged: (value) {
+                        //   viewModel.onBuyChange(value, inputType: TradeInputType.usd);
+                        // },
+                        readOnly: true,
                       ),
                       SizedBox(
                         width: double.infinity,
@@ -179,11 +181,11 @@ class MarketView extends StackedView<MarketViewmodel> {
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [Text('Max Sell'), Text(viewModel.maxSell)],
+                                  children: [Text('Max Sell (est)'), Text(viewModel.maxSell)],
                                 ),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                  children: [Text('Est Fee'), Text('0')],
+                                  children: [Text('est Fee'), Text('0')],
                                 ),
                               ],
                             ),

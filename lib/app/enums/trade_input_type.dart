@@ -1,0 +1,1 @@
+enum TradeInputType { coin, usd }

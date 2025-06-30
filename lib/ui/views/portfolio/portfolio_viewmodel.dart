@@ -1,8 +1,12 @@
+import 'dart:convert';
 import 'dart:developer';
 
 import 'package:stacked/stacked.dart';
+import 'package:stacked_services/stacked_services.dart';
 import 'package:trading_sample_app/app/app.locator.dart';
+import 'package:trading_sample_app/app/app.router.dart';
 import 'package:trading_sample_app/app/helper/format_helpers.dart';
+import 'package:trading_sample_app/app/models/asset_model.dart';
 import 'package:trading_sample_app/app/models/order_model.dart';
 import 'package:trading_sample_app/app/models/portfolio_model.dart';
 import 'package:trading_sample_app/app/services/order_service.dart';
@@ -10,6 +14,7 @@ import 'package:trading_sample_app/app/services/profile_service.dart';
 
 class PortfolioViewmodel extends ReactiveViewModel {
   final OrderService _orderService = locator<OrderService>();
+  final NavigationService _navigationService = locator<NavigationService>();
   final ProfileService _profileService = locator<ProfileService>();
 
   List<OrderModel> get listOrders => _orderService.orders;
@@ -21,12 +26,7 @@ class PortfolioViewmodel extends ReactiveViewModel {
     late double updatedAmount = 0;
     for (var order in listOrders) {
       if (!map.containsKey(order.symbol)) {
-        map[order.symbol] = PortfolioModel(
-          name: order.asset?.name,
-          base: order.asset?.base,
-          amount: 0,
-          logo: order.asset?.logoAsset ?? '',
-        );
+        map[order.symbol] = PortfolioModel(amount: 0, asset: order.asset);
       }
 
       final current = map[order.symbol]!;
@@ -45,11 +45,20 @@ class PortfolioViewmodel extends ReactiveViewModel {
   }
 
   void initData() {
-    // final jsonList = listOrders.map((e) => e.toJson()).toList();
-    // final data = jsonEncode(jsonList);
-    // log(data);
-    // log('list orders : ${listOrders.toString()}');
+    final jsonList = listOrders.map((e) => e.toJson()).toList();
+    final data = jsonEncode(jsonList);
+    log('data : $data');
+    log('list orders : ${listOrders.toString()}');
     // log(jsonEncode(holdingOrders.map((e) => e.toJson()).toList()));
+  }
+
+  void navigateToMarketView(AssetModel? asset) {
+    if (asset != null) {
+      _navigationService.navigateTo(
+        Routes.marketView,
+        arguments: MarketViewArguments(asset: asset),
+      );
+    }
   }
 
   // Todo: get coin balance group by coin

@@ -48,7 +48,7 @@ class HomeView extends StackedView<HomeViewmodel> {
                 itemBuilder: (context, idx) {
                   final asset = viewModel.listAssets[idx];
                   return ListTile(
-                    onTap: () => viewModel.navigateToOrderView(asset),
+                    onTap: () => viewModel.navigateToMarketView(asset),
                     tileColor: CustomColors.neutral40,
                     contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                     shape: RoundedRectangleBorder(

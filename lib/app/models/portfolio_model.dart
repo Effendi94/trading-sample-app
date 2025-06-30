@@ -1,21 +1,19 @@
+import 'package:trading_sample_app/app/models/asset_model.dart';
+
 class PortfolioModel {
-  String? name;
-  String? base;
-  double? amount;
-  String? logo;
+  final double? amount;
+  final AssetModel? asset;
 
-  PortfolioModel({this.name, this.base, this.amount, this.logo});
+  PortfolioModel({this.amount, this.asset});
 
-  PortfolioModel copyWith({String? name, String? base, double? amount, String? logo}) {
-    return PortfolioModel(
-      name: name ?? this.name,
-      base: base ?? this.base,
-      amount: amount ?? this.amount,
-      logo: logo ?? this.logo,
-    );
+  PortfolioModel copyWith({double? amount, AssetModel? asset}) {
+    return PortfolioModel(amount: amount ?? this.amount, asset: asset ?? this.asset);
   }
 
   Map<String, dynamic> toJson() {
-    return {'name': name, 'base': base, 'amount': amount, 'logo': logo};
+    return {
+      'amount': amount,
+      'asset': asset?.toString(), // Make sure AssetModel has toJson()
+    };
   }
 }

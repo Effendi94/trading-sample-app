@@ -20,7 +20,7 @@ class HomeViewmodel extends ReactiveViewModel {
     _webSocketService.getAllSymbols();
   }
 
-  void navigateToOrderView(AssetModel asset) {
+  void navigateToMarketView(AssetModel asset) {
     _navigationService.navigateTo(Routes.marketView, arguments: MarketViewArguments(asset: asset));
   }
 

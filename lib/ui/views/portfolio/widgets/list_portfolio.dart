@@ -17,16 +17,17 @@ class ListPortfolio extends StackedView<PortfolioViewmodel> {
           separatorBuilder: (context, index) => const SizedBox(height: 8),
           itemBuilder: (context, idx) {
             final item = viewModel.holdingOrders[idx];
+            final asset = viewModel.holdingOrders[idx].asset;
             return ListTile(
-              // onTap: () => viewModel.navigateToOrderView(asset),
+              onTap: () => viewModel.navigateToMarketView(asset),
               tileColor: CustomColors.neutral40,
               contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12), // Rounded corners
               ),
-              leading: CircleAvatarWidget(radius: 20, isSvg: true, assetPath: item.logo),
-              title: Text(item.name?.toUcWord ?? ''),
-              subtitle: Text('${item.amount} ${item.base?.toUpperCase() ?? ''}'),
+              leading: CircleAvatarWidget(radius: 20, isSvg: true, assetPath: asset?.logoAsset),
+              title: Text(asset?.name?.toUcWord ?? ''),
+              subtitle: Text('${item.amount} ${asset?.base?.toUpperCase() ?? ''}'),
             );
           },
         ),
