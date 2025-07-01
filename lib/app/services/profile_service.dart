@@ -10,10 +10,13 @@ class ProfileService with ListenableServiceMixin {
   final _orderService = locator<OrderService>();
   final ReactiveValue<ProfileModel?> _profile = ReactiveValue(null);
 
-  ProfileModel? get profile => _profile.value;
-  double get balance => _profile.value?.balance ?? 0;
-
   static const _profileKey = 'user';
+  ProfileModel? get profile => _profile.value;
+  double get balance {
+    final data = _profile.value?.balance ?? 0;
+    final res = (data * 100).floorToDouble() / 100;
+    return res;
+  }
 
   ProfileService() {
     listenToReactiveValues([_profile]);
