@@ -4,9 +4,11 @@ Flutter v3.29.3 • channel stable • https://github.com/flutter/flutter.git
 
 Dart 3.7.2 • DevTools 2.42.3
 
-## Demo
+## 🎥 Demo Video
 
 [🎬 Watch Demo Video](demo/demo_trading_simple_app.mp4)
+
+[▶️ Watch Demo on Google Drive](https://drive.google.com/file/d/1VvFx7x4YlO2KPLrnQRLNSzPRuovff00K/view?usp=sharing)
 
 ## Cara Run Project
 
