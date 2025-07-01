@@ -20,7 +20,7 @@ Dart 3.7.2 • DevTools 2.42.3
 
 - run generator
 
-- run the application (web or mobile)
+- run the application (web or desktop)
 
 ## Command Line
 
