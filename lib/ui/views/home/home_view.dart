@@ -35,7 +35,20 @@ class HomeView extends StackedView<HomeViewmodel> {
               child: Padding(
                 padding: const EdgeInsets.all(10),
                 child: Column(
-                  children: [Text('Welcome Trader'), Text('Make your investment today')],
+                  children: [
+                    Text(
+                      'Welcome Trader',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleMedium?.copyWith(color: CustomColors.textWhite),
+                    ),
+                    Text(
+                      'Make your investment today',
+                      style: Theme.of(
+                        context,
+                      ).textTheme.titleMedium?.copyWith(color: CustomColors.textWhite),
+                    ),
+                  ],
                 ),
               ),
             ),
